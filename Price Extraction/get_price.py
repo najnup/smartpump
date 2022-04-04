@@ -12,7 +12,7 @@ url = "https://www.nordpoolgroup.com/api/marketdata/page/59?currency=,,EUR,EUR"
 ### Format 2022-02-10T01:00:00
 ### %Y-%m-%dT%H:%M:%S
 
-dt_object1 = datetime.strptime('2022-02-10T01:00:00', '%Y-%m-%dT%H:%M:%S')
+dt_object1 = datetime.strptime('2022-04-03T01:00:00', '%Y-%m-%dT%H:%M:%S')
 
 if dt_object1 > datetime.now():
     print('dt is bigger than now')
@@ -26,12 +26,7 @@ else:
 def pool_prices(date = datetime.now()):
     ## This functions retrieves electricity prices for certain date
     ## Starting from 00 until 24, returns dictionary
-
-
-
-
-
-
+    pass
 
 
 file_path = r'C:\Users\janis\OneDrive\2022 0002 - Smart Pump\Price Extraction\response.json'
@@ -56,33 +51,10 @@ class NordPoolData():
  
         
         print('Init initiated!')
-
-    def price_lookup(self, current_time = datetime.now()):
-        ## Prepare proper URL
-
-        ## Columns are located - decoded['data']['Rows'][0]['Columns']
-        ## Seperate row - decoded['data']['Rows'][0]['Columns'][0]
-
-        ## Here extracting Price for certain time and date
-        ## datetime.strptime('2022-02-10T01:00:00', '%Y-%m-%dT%H:%M:%S')
-        for row in self.data['data']['Rows']:
-            #print(row)
-            if row['StartTime'] == '2022-02-17T00:00:00' and row['IsExtraRow']==False:
-            #if (datetime.strptime(row['StartTime'], '%Y-%m-%dT%H:%M:%S') < self.time_now) and (self.time_now <= datetime.strptime(row['EndTime'], '%Y-%m-%dT%H:%M:%S')) and row['IsExtraRow']==False: ### We have proper Row here
-                print(row)
-                print('match')
-                for column in row['Columns']:
-                    #print(row['Columns'])
-                    if column['CombinedName'] == '15-02-2022':
-                        print(column['Value'])
-                        self.price = column['Value']
-                        return column['Value']
-
-        print('No Price Found!')
         
 
 
-def pool_price(price_time = datetime.now()):
+"""def pool_price(price_time = datetime.now()):
     ## Expecting datetime object. If no time passed then using current time
 
     r = requests.get(url)
@@ -90,15 +62,37 @@ def pool_price(price_time = datetime.now()):
         data = r.json()
         print('Data Obtained successfully!')
     else:
-        print('Something went sideways!')
+        print('Something went sideways!')"""
 
 
-def main():
-    ## TO do
-    pass
+
+def pool_price(self, current_time = datetime.now()):
+    ## Prepare proper URL
+
+    ## Columns are located - decoded['data']['Rows'][0]['Columns']
+    ## Seperate row - decoded['data']['Rows'][0]['Columns'][0]
+
+    ## Here extracting Price for certain time and date
+    ## datetime.strptime('2022-02-10T01:00:00', '%Y-%m-%dT%H:%M:%S')
+    for row in self.data['data']['Rows']:
+        #print(row)
+        if row['StartTime'] == '2022-02-17T00:00:00' and row['IsExtraRow']==False:
+        #if (datetime.strptime(row['StartTime'], '%Y-%m-%dT%H:%M:%S') < self.time_now) and (self.time_now <= datetime.strptime(row['EndTime'], '%Y-%m-%dT%H:%M:%S')) and row['IsExtraRow']==False: ### We have proper Row here
+            print(row)
+            print('match')
+            for column in row['Columns']:
+                #print(row['Columns'])
+                if column['CombinedName'] == '15-02-2022':
+                    print(column['Value'])
+                    self.price = column['Value']
+                    return column['Value']
+
+    print('No Price Found!')
+
+
 
 if __name__ == "__main__":
     #To do
-    pass
+    price_lookup()
 
 print("Loaded!")
