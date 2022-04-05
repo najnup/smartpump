@@ -14,10 +14,7 @@ url = "https://www.nordpoolgroup.com/api/marketdata/page/59?currency=,,EUR,EUR"
 ### Write function, that creates Table of times and coresponding prices, for proviced day and stores in dictionary
 def pool_prices(day_date = datetime.now()):
     ### day_date - has to be a datetime object
-    ### will fetch prices and return Dictionary of the values
-    ### Table
-    ### StartTime # EndTime # Price
-    ### Example -= 10-02-2022    %Y-%m-%dT%H:%M:%S
+    prices_dict = []
     request_url = url + "&endDate=" + day_date.strftime('%d-%m-%Y')
 
     r = requests.get(request_url)
@@ -26,26 +23,18 @@ def pool_prices(day_date = datetime.now()):
         print('Data Obtained successfully!')
     
         for row in data['data']['Rows']:
-            #print(row)
-            if row['StartTime'] == '2022-04-03T00:00:00' and row['IsExtraRow']==False:
-            #if (datetime.strptime(row['StartTime'], '%Y-%m-%dT%H:%M:%S') < self.time_now) and (self.time_now <= datetime.strptime(row['EndTime'], '%Y-%m-%dT%H:%M:%S')) and row['IsExtraRow']==False: ### We have proper Row here
-                print(row)
-                print('match')
+            ### row['IsExtraRow']==False taking only main info
+            if row['IsExtraRow']==False:
                 for column in row['Columns']:
                     #print(row['Columns'])
-                    if column['CombinedName'] == '03-04-2022':
-                        print(column['Value'])
-                        price = column['Value']
-                        return column['Value']
-
-        print('No Price Found!')
-
-
-
-
+                    if column['Name'] == day_date.strftime('%d-%m-%Y'):
+                        print(row['StartTime'], row['EndTime'], column['Name'], column['Value'])
+                        prices_dict.append({'StartTime':row['StartTime'], 'EndTime':row['EndTime'], 'Price':column['Value']})
+        print(prices_dict)
+        return prices_dict
 
     else:
-        print('Something went sideways!')
+        print('Something went South!')
 
 
 def get_price(time = datetime.now()):
