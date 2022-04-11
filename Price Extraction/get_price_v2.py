@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+
+"""
+Description: This part for dayly electricity price extraction is used to decrease and maintain household electricity consumption. This part of code delivers current price avialable and makes current price more easily observable. Goal is to decrease electricity bill.
+Author: NajNup
+Start Date: 03.03.2022
+Disclaimer: In this example NordPool price extraction is used for learning purposes not used for commercial purpose in any way. NordPool has data portal available, more details on - https://www.nordpoolgroup.com/en/services/power-market-data-services/dataportalregistration/
+            All information here is used merely for educational and informational purposes. It is not intended as a substitute for professional advice. Should you decide to act upon any information here, you do so at your own risk.
+"""
+
 import json
 import requests
 from datetime import datetime
@@ -49,11 +59,24 @@ def get_price(price_data, time = datetime.now()):
             print(row['Price'])
             return row['Price']
 
-print("so far here!")
+def get_average(prices_data):
+    ### Function is returning average prace for that day
+    ### prices_data is expected to be a list
+    sum_prices = 0
+
+    ### Acumulate all days prices
+    for row in prices_data:
+        sum_prices += float(row['Price'].replace(',', '.'))
+    print('Test!')
+    print(sum_prices//len(prices_data))
+    return (sum_prices//len(prices_data))
+
+print('All functions defined!')
 
 if __name__ == "__main__":
     print("This is the part that will run!")
     prices_data = pool_prices()
     ### Will have to do time zone adjustment
-    
     get_price(prices_data)
+    print('Average is!')
+    get_average(prices_data)
