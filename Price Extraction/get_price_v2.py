@@ -75,8 +75,10 @@ print('All functions defined!')
 
 if __name__ == "__main__":
     print("This is the part that will run!")
+    ### DataTime object example - datetime(2022, 04, 12)
     prices_data = pool_prices()
     ### Will have to do time zone adjustment
     get_price(prices_data)
     print('Average is!')
-    get_average(prices_data)
+    get_average(prices_data)\
+    
