@@ -1,16 +1,16 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Flaskr</title>
-<link rel="stylesheet" href="">
+<title>Electricity lookup for - {{ date }}</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='styles/stylesheet.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='styles/charts.min.css') }}">
+<!--
 <nav>
-  <h1>Flaskr</h1>
+  <h1>Electricity Prices</h1>
   <ul>
-    {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
-      <li><a href="">Log Out</a>
-    {% else %}
-      <li><a href="">Register</a>
-      <li><a href="">Log In</a>
-    {% endif %}
+    <li>Price 1h before: {{ before_price }}
+    <li>Price now: {{ now_price }}
+    <li>Price in 1h: {{ future_price }}
+    <li> -------------------------
+    <li>Average price{{ average_price}}
   </ul>
 </nav>
 <section class="content">
@@ -22,3 +22,17 @@
   {% endfor %}
   {% block content %}{% endblock %}
 </section>
+-->
+<body>
+
+<table id="column-example-16" class="charts-css column show-labels show-primary-axis show-data-axes"><caption> Column Example #16 </caption> 
+    <thead><tr><th scope="col"> Year </th> <th scope="col"> Progress </th></tr></thead>
+    <tbody>
+        <tr><th scope="row"> Before </th> <td style="--size:0.2;"></td></tr>
+        <tr><th scope="row"> Now </th> <td style="--size:0.4;"></td></tr>
+        <tr><th scope="row"> In 1h </th> <td style="--size:0.6;"></td></tr>
+    </tbody>
+</table>
+
+</body>
+</html>

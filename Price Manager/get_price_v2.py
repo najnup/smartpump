@@ -11,9 +11,11 @@ Disclaimer: In this example NordPool price extraction is used for learning purpo
 import json
 import requests
 from datetime import datetime
+from datetime import timedelta
 
 ### Global Variables
 TIME_NOW = datetime.now()
+LOCAL_TIME = TIME_NOW + timedelta(hours = 3) ### This will return local RIGA time
 
 
 ### Function, that creates Table of times and coresponding prices, for proviced day and stores in dictionary

@@ -1,0 +1,15 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: pink;
+  }
+  
+  #column-example-16 {
+    height: 200px;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
