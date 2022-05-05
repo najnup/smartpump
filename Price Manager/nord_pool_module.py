@@ -13,11 +13,6 @@ import requests
 from datetime import datetime
 from datetime import timedelta
 
-### Global Variables
-TIME_NOW = datetime.now()
-LOCAL_TIME = TIME_NOW + timedelta(hours = 3) ### This will return local RIGA time
-
-
 ### Function, that creates Table of times and coresponding prices, for proviced day and stores in dictionary
 ### Currency EUR
 ### Units for results - EUR/MWh
@@ -30,8 +25,16 @@ LOCAL_TIME = TIME_NOW + timedelta(hours = 3) ### This will return local RIGA tim
 ### Variables
 url = "https://www.nordpoolgroup.com/api/marketdata/page/59?currency=,,EUR,EUR"
 
+def local_time(adjustment = 0):
+    ### Function returning local current time to return corect prices from table
+    ### Possible to pass hours adjustment as intiger to represent proper time values
+    ### Nord Pool prices are in UTC +1
+    ### My local time is UTC +3
+    time_offset = 2 + adjustment
+    return datetime.now() + timedelta(hours = time_offset)
+
 ### What is the time zone for the results???
-def pool_prices(day_date = TIME_NOW):
+def pool_prices(day_date = datetime.now()):
     ### day_date - has to be a datetime object
     ### Time will be presented in text. Example: 2022-04-03T01:00:00
     prices_dict = []
@@ -46,45 +49,36 @@ def pool_prices(day_date = TIME_NOW):
             ### row['IsExtraRow']==False taking only main info
             if row['IsExtraRow']==False:
                 for column in row['Columns']:
-                    #print(row['Columns'])
                     if column['Name'] == day_date.strftime('%d-%m-%Y'):
-                        print(row['StartTime'], row['EndTime'], column['Name'], column['Value'])
                         prices_dict.append({'StartTime':row['StartTime'], 'EndTime':row['EndTime'], 'Price':column['Value']})
-        print('Prices Dictionary prepared')
+        print('Request made, Prices Dictionary prepared')
         return prices_dict
 
     else:
         print('Something went South!')
 
-def get_price(price_data, time = TIME_NOW):
+def get_price(price_data, time = datetime.now()):
     ### Provide the time when needed
     ### is using sort of global dictionary.
     ### time example datetime.strptime('2022-04-03T01:00:00', '%Y-%m-%dT%H:%M:%S')
     for row in price_data:
         if (datetime.strptime(row['StartTime'],'%Y-%m-%dT%H:%M:%S') < time) and (datetime.strptime(row['EndTime'],'%Y-%m-%dT%H:%M:%S') > time):
-            print(row['Price'])
             return row['Price']
+    
+    ### For cases when no price could have been returned
+    return "None"
 
 def get_average(prices_data):
     ### Function is returning average prace for that day
     ### prices_data is expected to be a list
     sum_prices = 0
-
     ### Acumulate all days prices
     for row in prices_data:
         sum_prices += float(row['Price'].replace(',', '.'))
-    print('Test!')
-    print(sum_prices//len(prices_data))
     return (sum_prices//len(prices_data))
 
 print('All functions loaded!')
 
 if __name__ == "__main__":
     print("This is the part that will run!")
-    ### DataTime object example - datetime(2022, 04, 12)
-    prices_data = pool_prices()
-    ### Will have to do time zone adjustment
-    get_price(prices_data)
-    print('Average is!')
-    get_average(prices_data)\
     
